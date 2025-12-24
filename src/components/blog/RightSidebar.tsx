@@ -10,7 +10,7 @@ interface RightSidebarProps {
 
 export function RightSidebar({ className }: RightSidebarProps) {
   return (
-    <aside className={cn("w-72 border-l border-border bg-sidebar min-h-screen sticky top-0 p-6 space-y-8", className)}>
+    <aside className={cn("w-72 border-l border-border bg-background min-h-screen sticky top-0 p-6 space-y-8", className)}>
       {/* Profile Card */}
       <div className="text-center">
         <img 
@@ -24,7 +24,7 @@ export function RightSidebar({ className }: RightSidebarProps) {
       </div>
 
       {/* Newsletter */}
-      <div className="bg-secondary rounded-lg p-5">
+      <div className="border border-border rounded-lg p-5">
         <h4 className="font-semibold text-foreground mb-2">Newsletter</h4>
         <p className="text-sm text-muted-foreground mb-4">
           Đăng ký để nhận bài viết mới nhất.

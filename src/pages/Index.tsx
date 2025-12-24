@@ -66,10 +66,10 @@ const Index = () => {
             <SearchBar value={searchQuery} onChange={setSearchQuery} />
           </div>
 
-          {/* Blog Posts Grid */}
-          <div className="p-4 lg:p-8">
+          {/* Blog Posts List */}
+          <div className="p-4 lg:px-8 lg:py-6">
             {filteredPosts.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="divide-y divide-border">
                 {filteredPosts.map((post) => (
                   <BlogCard key={post.id} post={post} />
                 ))}
