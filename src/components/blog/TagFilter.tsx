@@ -18,27 +18,27 @@ const tagColorClasses: Record<string, { active: string; inactive: string }> = {
     inactive: "bg-secondary text-foreground hover:bg-muted" 
   },
   pink: { 
-    active: "bg-tag-pink text-white", 
+    active: "bg-foreground text-background", 
     inactive: "bg-tag-pink/10 text-tag-pink hover:bg-tag-pink/20" 
   },
   orange: { 
-    active: "bg-tag-orange text-white", 
+    active: "bg-foreground text-background", 
     inactive: "bg-tag-orange/10 text-tag-orange hover:bg-tag-orange/20" 
   },
   green: { 
-    active: "bg-tag-green text-white", 
+    active: "bg-foreground text-background", 
     inactive: "bg-tag-green/10 text-tag-green hover:bg-tag-green/20" 
   },
   blue: { 
-    active: "bg-tag-blue text-white", 
+    active: "bg-foreground text-background", 
     inactive: "bg-tag-blue/10 text-tag-blue hover:bg-tag-blue/20" 
   },
   purple: { 
-    active: "bg-tag-purple text-white", 
+    active: "bg-foreground text-background", 
     inactive: "bg-tag-purple/10 text-tag-purple hover:bg-tag-purple/20" 
   },
   yellow: { 
-    active: "bg-tag-yellow text-white", 
+    active: "bg-foreground text-background", 
     inactive: "bg-tag-yellow/10 text-tag-yellow hover:bg-tag-yellow/20" 
   },
 };
