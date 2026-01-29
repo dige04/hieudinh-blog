@@ -1,4 +1,4 @@
-import { Github, Linkedin, Instagram, Mail, MapPin, Briefcase, AtSign, PenSquare } from "lucide-react";
+import { Github, Linkedin, Instagram, Mail, AtSign, PenSquare } from "lucide-react";
 import { profile } from "@/data/blogData";
 import avatar from "@/assets/avatar.jpg";
 
@@ -60,27 +60,6 @@ const About = () => {
             <Instagram className="w-8 h-8 text-foreground group-hover:scale-110 transition-transform" />
           </a>
 
-          {/* Location Card - Wide */}
-          <div className="col-span-2 row-span-1 bg-background rounded-3xl p-6 flex items-center gap-4 border border-border">
-            <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center">
-              <MapPin className="w-6 h-6 text-foreground" />
-            </div>
-            <div>
-              <p className="text-xs text-muted-foreground uppercase tracking-wide">Location</p>
-              <p className="text-foreground font-medium">{profile.location}</p>
-            </div>
-          </div>
-
-          {/* Work Card - Wide */}
-          <div className="col-span-2 row-span-1 bg-background rounded-3xl p-6 flex items-center gap-4 border border-border">
-            <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center">
-              <Briefcase className="w-6 h-6 text-foreground" />
-            </div>
-            <div>
-              <p className="text-xs text-muted-foreground uppercase tracking-wide">Work</p>
-              <p className="text-foreground font-medium">{profile.work}</p>
-            </div>
-          </div>
 
           {/* Email Card */}
           <a 
