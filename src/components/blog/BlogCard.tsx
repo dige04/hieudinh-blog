@@ -8,7 +8,7 @@ interface BlogCardProps {
 export function BlogCard({ post, onClick }: BlogCardProps) {
   return (
     <article 
-      className="group cursor-pointer py-6 first:pt-0 last:pb-0 flex gap-4 md:gap-6"
+      className="group cursor-pointer py-4 flex gap-4"
       onClick={onClick}
     >
       {/* Thumbnail - Left side, horizontal & rounded */}
