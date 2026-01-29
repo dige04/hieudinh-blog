@@ -3,7 +3,6 @@ import { BlogCard } from "@/components/blog/BlogCard";
 import { SearchBar } from "@/components/blog/SearchBar";
 import { TagFilter } from "@/components/blog/TagFilter";
 import { SocialLinks } from "@/components/blog/SocialLinks";
-import { MobileHeader } from "@/components/blog/MobileHeader";
 import { blogPosts, tags, profile } from "@/data/blogData";
 import avatar from "@/assets/avatar.jpg";
 
@@ -23,46 +22,37 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Mobile Header */}
-      <MobileHeader selectedTag={selectedTag} onTagSelect={setSelectedTag} />
-
-      {/* Main Content */}
-      <main className="max-w-4xl mx-auto">
-        {/* Hero Section - visible on desktop */}
-        <div className="hidden lg:block px-8 py-12 border-b border-border">
-          <div className="max-w-2xl">
-            <a href="/" className="flex items-center gap-4 mb-6 hover:opacity-80 transition-opacity">
-              <img 
-                src={avatar} 
-                alt={profile.name}
-                className="w-16 h-16 rounded-full object-cover"
-              />
-              <div>
-                <h1 className="text-2xl font-bold text-foreground">{profile.name}</h1>
-                <p className="text-muted-foreground">{profile.bio}</p>
-              </div>
-            </a>
-            <SocialLinks links={profile.social} />
-          </div>
+      <main className="max-w-3xl mx-auto px-4 md:px-6 lg:px-8">
+        {/* Hero Section - unified for all devices */}
+        <div className="py-8 md:py-12 border-b border-border">
+          <a href="/" className="flex items-center gap-3 md:gap-4 mb-4 md:mb-6 hover:opacity-80 transition-opacity">
+            <img 
+              src={avatar} 
+              alt={profile.name}
+              className="w-12 h-12 md:w-16 md:h-16 rounded-full object-cover flex-shrink-0"
+            />
+            <div className="min-w-0">
+              <h1 className="text-xl md:text-2xl font-bold text-foreground">{profile.name}</h1>
+              <p className="text-sm md:text-base text-muted-foreground truncate">{profile.bio}</p>
+            </div>
+          </a>
+          <SocialLinks links={profile.social} size="sm" />
         </div>
 
-        {/* Search & Filter - Desktop */}
-        <div className="hidden lg:block px-8 py-6 border-b border-border">
-          <div className="flex items-center gap-6">
-            <div className="w-72">
+        {/* Search & Filter - unified responsive */}
+        <div className="py-4 md:py-6 border-b border-border">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+            <div className="w-full sm:w-64">
               <SearchBar value={searchQuery} onChange={setSearchQuery} />
             </div>
-            <TagFilter tags={tags} selectedTag={selectedTag} onTagSelect={setSelectedTag} />
+            <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+              <TagFilter tags={tags} selectedTag={selectedTag} onTagSelect={setSelectedTag} />
+            </div>
           </div>
-        </div>
-
-        {/* Search - Mobile */}
-        <div className="lg:hidden px-4 py-4">
-          <SearchBar value={searchQuery} onChange={setSearchQuery} />
         </div>
 
         {/* Blog Posts List */}
-        <div className="p-4 lg:px-8 lg:py-6">
+        <div className="py-4 md:py-6">
           {filteredPosts.length > 0 ? (
             <div className="divide-y divide-border">
               {filteredPosts.map((post) => (
