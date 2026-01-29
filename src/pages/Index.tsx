@@ -5,6 +5,7 @@ import { TagFilter } from "@/components/blog/TagFilter";
 import { SocialLinks } from "@/components/blog/SocialLinks";
 import { MobileHeader } from "@/components/blog/MobileHeader";
 import { blogPosts, tags, profile } from "@/data/blogData";
+import avatar from "@/assets/avatar.jpg";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -32,7 +33,7 @@ const Index = () => {
           <div className="max-w-2xl">
             <a href="/" className="flex items-center gap-4 mb-6 hover:opacity-80 transition-opacity">
               <img 
-                src={profile.avatar} 
+                src={avatar} 
                 alt={profile.name}
                 className="w-16 h-16 rounded-full object-cover"
               />

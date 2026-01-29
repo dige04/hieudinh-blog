@@ -5,6 +5,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { SocialLinks } from "./SocialLinks";
 import { TagFilter } from "./TagFilter";
 import { profile, tags } from "@/data/blogData";
+import avatar from "@/assets/avatar.jpg";
 
 interface MobileHeaderProps {
   selectedTag: string;
@@ -18,13 +19,13 @@ export function MobileHeader({ selectedTag, onTagSelect }: MobileHeaderProps) {
     <div className="lg:hidden">
       {/* Header */}
       <header className="sticky top-0 z-50 bg-background border-b border-border px-4 py-3 flex items-center justify-between">
-        <a href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+        <a href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
           <img 
-            src={profile.avatar} 
+            src={avatar} 
             alt={profile.name}
-            className="w-8 h-8 rounded-full object-cover"
+            className="w-8 h-8 rounded-full object-cover flex-shrink-0"
           />
-          <span className="font-semibold text-sm">{profile.name}</span>
+          <span className="font-semibold text-sm truncate">{profile.name}</span>
         </a>
         
         <Sheet open={open} onOpenChange={setOpen}>
@@ -38,7 +39,7 @@ export function MobileHeader({ selectedTag, onTagSelect }: MobileHeaderProps) {
             <div className="text-center mb-8">
               <a href="/" className="inline-block hover:opacity-80 transition-opacity">
                 <img 
-                  src={profile.avatar} 
+                  src={avatar} 
                   alt={profile.name}
                   className="w-20 h-20 rounded-full mx-auto mb-4 object-cover"
                 />
