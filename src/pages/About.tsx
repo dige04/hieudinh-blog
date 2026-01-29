@@ -1,4 +1,4 @@
-import { Github, Linkedin, Instagram, Mail, MapPin, Briefcase, AtSign } from "lucide-react";
+import { Github, Linkedin, Instagram, Mail, MapPin, Briefcase, AtSign, PenSquare } from "lucide-react";
 import { profile } from "@/data/blogData";
 import avatar from "@/assets/avatar.jpg";
 
@@ -91,16 +91,15 @@ const About = () => {
             <span className="text-muted-foreground">hi@hieudinh.dev</span>
           </a>
 
-        </div>
-
-        {/* Back to Blog Link */}
-        <div className="text-center mt-8">
+          {/* Blog Card */}
           <a 
-            href="/" 
-            className="text-muted-foreground hover:text-foreground transition-colors text-sm"
+            href="/blog"
+            className="col-span-2 md:col-span-4 row-span-1 bg-background rounded-3xl p-6 flex items-center justify-center gap-3 border border-border hover:bg-muted/50 transition-colors group"
           >
-            ← Quay lại Blog
+            <PenSquare className="w-5 h-5 text-foreground group-hover:scale-110 transition-transform" />
+            <span className="text-foreground font-medium">Blog</span>
           </a>
+
         </div>
       </div>
     </div>
