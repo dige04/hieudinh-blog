@@ -51,16 +51,21 @@ export function TagFilter({ tags, selectedTag, onTagSelect }: TagFilterProps) {
         const colorClass = tagColorClasses[tag.color];
         
         return (
-          <Badge
+          <button
             key={tag.name}
+            type="button"
             className={cn(
-              "cursor-pointer border-0 transition-colors font-medium flex-shrink-0",
+              "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium transition-colors flex-shrink-0",
               isActive ? colorClass.active : colorClass.inactive
             )}
-            onClick={() => onTagSelect(tag.name)}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onTagSelect(tag.name);
+            }}
           >
             {tag.name}
-          </Badge>
+          </button>
         );
       })}
     </div>
