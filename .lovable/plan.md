@@ -1,69 +1,100 @@
 
-# Đơn giản hóa trang Blog
+# Thống nhất Layout Blog cho mọi thiết bị
 
-## Tổng quan
-Xóa 2 sidebar (trái và phải) khỏi trang `/blog`, chỉ giữ lại phần hero section ở trên cùng và làm cho nó có thể click để quay về trang chủ About (`/`).
+## Vấn đề hiện tại
+- Desktop (`lg:`) hiển thị Hero Section với avatar to, bio đầy đủ
+- Mobile/Tablet (`<lg`) hiển thị MobileHeader với hamburger menu riêng
+- Hai layout khác nhau tạo trải nghiệm không nhất quán
+
+## Giải pháp
+Tạo một layout duy nhất responsive cho tất cả thiết bị, giống như screenshot reference - tinh tế và nhất quán.
 
 ## Thay đổi
 
 ### 1. Cập nhật `src/pages/Index.tsx`
 
-**Xóa bỏ:**
-- Import `LeftSidebar` và `RightSidebar`
-- Component `<LeftSidebar />` và `<RightSidebar />` trong JSX
-- Bỏ wrapper `<div className="flex">` vì không cần layout 3 cột nữa
-
-**Cập nhật Hero Section:**
-- Bọc phần profile (avatar + tên + bio) trong thẻ `<a href="/">` để click vào sẽ quay về trang About
-- Thêm `cursor-pointer` và `hover:opacity-80` để người dùng biết có thể click được
-
-### 2. Layout mới
+Thay thế 2 layout riêng biệt bằng một layout thống nhất:
 
 ```text
-┌─────────────────────────────────────┐
-│  👤 Hieu Dinh (click → về /)       │
-│     Solopreneur                     │
-│     [Social Links]                  │
-├─────────────────────────────────────┤
-│  🔍 Search   [Tags filter]          │
-├─────────────────────────────────────┤
-│  📄 Blog Post 1                     │
-│  ─────────────────────────          │
-│  📄 Blog Post 2                     │
-│  ─────────────────────────          │
-│  📄 Blog Post 3                     │
-└─────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│  👤 Avatar  Hieu Dinh                   │
+│             Solopreneur | Data & AI...  │
+│                                         │
+│  @ 🐙 in 📷 (social icons)             │
+├─────────────────────────────────────────┤
+│  🔍 Tìm kiếm...  [All][Design][React]..│
+├─────────────────────────────────────────┤
+│  DESIGN                      [thumbnail]│
+│  Thiết kế UX/UI cho ứng dụng...        │
+│  20 Dec 2024 • 5 min read              │
+├─────────────────────────────────────────┤
+│  ...                                    │
+└─────────────────────────────────────────┘
 ```
 
-### 3. Chi tiết kỹ thuật
+**Thay đổi chi tiết:**
+- Xóa `MobileHeader` component
+- Tạo một Hero Section responsive hiển thị trên mọi kích thước màn hình
+- Search và Tag filter trên cùng một hàng (wrap trên mobile)
+- Padding responsive: `px-4 md:px-6 lg:px-8`
+
+### 2. Xóa hoặc đơn giản hóa `MobileHeader.tsx`
+
+Có thể xóa hoàn toàn component này vì không còn cần thiết.
+
+### 3. Chi tiết code mới cho `Index.tsx`
 
 ```tsx
-// Xóa imports không cần
-// import { LeftSidebar } from "@/components/blog/LeftSidebar";
-// import { RightSidebar } from "@/components/blog/RightSidebar";
-
-// Hero Section với link về trang chủ
-<div className="hidden lg:block px-8 py-12 border-b border-border">
-  <div className="max-w-2xl mx-auto">
-    <a href="/" className="flex items-center gap-4 mb-6 hover:opacity-80 transition-opacity">
-      <img 
-        src={profile.avatar} 
-        alt={profile.name}
-        className="w-16 h-16 rounded-full object-cover"
-      />
-      <div>
-        <h1 className="text-2xl font-bold text-foreground">{profile.name}</h1>
-        <p className="text-muted-foreground">{profile.bio}</p>
+return (
+  <div className="min-h-screen bg-background">
+    <main className="max-w-3xl mx-auto px-4 md:px-6 lg:px-8">
+      {/* Hero Section - unified for all devices */}
+      <div className="py-8 md:py-12 border-b border-border">
+        <a href="/" className="flex items-center gap-3 md:gap-4 mb-4 md:mb-6 hover:opacity-80 transition-opacity">
+          <img 
+            src={avatar} 
+            alt={profile.name}
+            className="w-12 h-12 md:w-16 md:h-16 rounded-full object-cover flex-shrink-0"
+          />
+          <div className="min-w-0">
+            <h1 className="text-xl md:text-2xl font-bold text-foreground">{profile.name}</h1>
+            <p className="text-sm md:text-base text-muted-foreground truncate">{profile.bio}</p>
+          </div>
+        </a>
+        <SocialLinks links={profile.social} size="sm" />
       </div>
-    </a>
-    <SocialLinks links={profile.social} />
-  </div>
-</div>
 
-// Căn giữa nội dung chính vì không còn sidebar
-<main className="flex-1 min-w-0 max-w-4xl mx-auto">
+      {/* Search & Filter - unified responsive */}
+      <div className="py-4 md:py-6 border-b border-border">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+          <div className="w-full sm:w-64">
+            <SearchBar value={searchQuery} onChange={setSearchQuery} />
+          </div>
+          <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+            <TagFilter tags={tags} selectedTag={selectedTag} onTagSelect={setSelectedTag} />
+          </div>
+        </div>
+      </div>
+
+      {/* Blog Posts List */}
+      <div className="py-4 md:py-6">
+        {/* ... posts */}
+      </div>
+    </main>
+  </div>
+);
 ```
 
-### 4. Cập nhật MobileHeader
+## Responsive Breakpoints
 
-Cũng cần làm cho phần profile trong mobile header có thể click về trang chủ.
+| Thiết bị | Breakpoint | Layout |
+|----------|------------|--------|
+| Mobile | < 640px | Avatar 48px, search full width, tags scroll ngang |
+| Tablet | 640px - 1024px | Avatar 64px, search + tags cùng hàng |
+| Desktop | > 1024px | Giống tablet, padding rộng hơn |
+
+## Lợi ích
+- Một codebase duy nhất cho mọi thiết bị
+- Không cần hamburger menu phức tạp
+- Trải nghiệm nhất quán như screenshot reference
+- Dễ maintain hơn
