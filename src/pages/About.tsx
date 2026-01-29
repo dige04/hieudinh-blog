@@ -1,4 +1,4 @@
-import { Github, Linkedin, Instagram, Mail, MapPin, Briefcase, Heart, AtSign } from "lucide-react";
+import { Github, Linkedin, Instagram, Mail, MapPin, Briefcase, AtSign } from "lucide-react";
 import { profile } from "@/data/blogData";
 import avatar from "@/assets/avatar.jpg";
 
@@ -82,41 +82,14 @@ const About = () => {
             </div>
           </div>
 
-          {/* About Text Card - Full Width */}
-          <div className="col-span-2 md:col-span-4 row-span-1 bg-background rounded-3xl p-8 border border-border">
-            <h2 className="text-lg font-semibold text-foreground mb-3">Về tôi</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              Xin chào! Tôi là Hieu - một solopreneur với đam mê về Data và AI. 
-              Hiện tại tôi đang xây dựng các sản phẩm công nghệ và chia sẻ hành trình của mình qua blog này.
-            </p>
-          </div>
-
           {/* Email Card */}
           <a 
-            href="mailto:hieu.dt@gdghanoi.com"
-            className="col-span-2 row-span-1 bg-foreground rounded-3xl p-6 flex items-center justify-center gap-3 text-background hover:opacity-90 transition-opacity"
+            href="mailto:hi@hieudinh.dev"
+            className="col-span-2 md:col-span-4 row-span-1 bg-background rounded-3xl p-6 flex items-center justify-center gap-3 border border-border hover:bg-muted/50 transition-colors"
           >
-            <Mail className="w-5 h-5" />
-            <span className="font-medium">Liên hệ với tôi</span>
+            <Mail className="w-5 h-5 text-muted-foreground" />
+            <span className="text-muted-foreground">hi@hieudinh.dev</span>
           </a>
-
-          {/* Interests Card */}
-          <div className="col-span-2 row-span-1 bg-background rounded-3xl p-6 border border-border">
-            <div className="flex items-center gap-2 mb-3">
-              <Heart className="w-4 h-4 text-foreground" />
-              <p className="text-xs text-muted-foreground uppercase tracking-wide">Interests</p>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {["Data Engineering", "GenAI", "Databricks", "Python", "Building Products"].map((interest) => (
-                <span 
-                  key={interest}
-                  className="px-3 py-1 bg-muted rounded-full text-sm text-foreground"
-                >
-                  {interest}
-                </span>
-              ))}
-            </div>
-          </div>
 
         </div>
 
