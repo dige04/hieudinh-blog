@@ -1,5 +1,6 @@
-import { Github, Twitter, Linkedin, Instagram, Mail, MapPin, Briefcase, Heart } from "lucide-react";
+import { Github, Linkedin, Instagram, Mail, MapPin, Briefcase, Heart, AtSign } from "lucide-react";
 import { profile } from "@/data/blogData";
+import avatar from "@/assets/avatar.jpg";
 
 const About = () => {
   return (
@@ -11,7 +12,7 @@ const About = () => {
           {/* Profile Card - Large */}
           <div className="col-span-2 row-span-2 bg-background rounded-3xl p-8 flex flex-col items-center justify-center text-center border border-border">
             <img 
-              src={profile.avatar} 
+              src={avatar} 
               alt={profile.name}
               className="w-28 h-28 rounded-full object-cover mb-4"
             />
@@ -19,14 +20,14 @@ const About = () => {
             <p className="text-muted-foreground text-sm max-w-xs">{profile.bio}</p>
           </div>
 
-          {/* Twitter Card */}
+          {/* Threads Card */}
           <a 
-            href={profile.social.twitter}
+            href={profile.social.threads}
             target="_blank"
             rel="noopener noreferrer"
             className="col-span-1 row-span-1 bg-background rounded-3xl p-6 flex items-center justify-center border border-border hover:bg-muted/50 transition-colors group"
           >
-            <Twitter className="w-8 h-8 text-foreground group-hover:scale-110 transition-transform" />
+            <AtSign className="w-8 h-8 text-foreground group-hover:scale-110 transition-transform" />
           </a>
 
           {/* GitHub Card */}
@@ -66,7 +67,7 @@ const About = () => {
             </div>
             <div>
               <p className="text-xs text-muted-foreground uppercase tracking-wide">Location</p>
-              <p className="text-foreground font-medium">Ho Chi Minh City, Vietnam</p>
+              <p className="text-foreground font-medium">{profile.location}</p>
             </div>
           </div>
 
@@ -77,7 +78,7 @@ const About = () => {
             </div>
             <div>
               <p className="text-xs text-muted-foreground uppercase tracking-wide">Work</p>
-              <p className="text-foreground font-medium">Frontend Developer</p>
+              <p className="text-foreground font-medium">{profile.work}</p>
             </div>
           </div>
 
@@ -85,14 +86,14 @@ const About = () => {
           <div className="col-span-2 md:col-span-4 row-span-1 bg-background rounded-3xl p-8 border border-border">
             <h2 className="text-lg font-semibold text-foreground mb-3">Về tôi</h2>
             <p className="text-muted-foreground leading-relaxed">
-              Xin chào! Tôi là một Frontend Developer với niềm đam mê thiết kế và xây dựng các sản phẩm web đẹp mắt, 
-              thân thiện với người dùng. Tôi thích khám phá công nghệ mới và chia sẻ kiến thức qua blog của mình.
+              Xin chào! Tôi là Hieu - một solopreneur với đam mê về Data và AI. 
+              Hiện tại tôi đang xây dựng các sản phẩm công nghệ và chia sẻ hành trình của mình qua blog này.
             </p>
           </div>
 
           {/* Email Card */}
           <a 
-            href="mailto:hello@example.com"
+            href="mailto:hieu.dt@gdghanoi.com"
             className="col-span-2 row-span-1 bg-foreground rounded-3xl p-6 flex items-center justify-center gap-3 text-background hover:opacity-90 transition-opacity"
           >
             <Mail className="w-5 h-5" />
@@ -106,7 +107,7 @@ const About = () => {
               <p className="text-xs text-muted-foreground uppercase tracking-wide">Interests</p>
             </div>
             <div className="flex flex-wrap gap-2">
-              {["UI/UX", "React", "TypeScript", "Design Systems", "Photography"].map((interest) => (
+              {["Data Engineering", "GenAI", "Databricks", "Python", "Building Products"].map((interest) => (
                 <span 
                   key={interest}
                   className="px-3 py-1 bg-muted rounded-full text-sm text-foreground"

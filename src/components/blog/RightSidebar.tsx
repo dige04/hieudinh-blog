@@ -14,7 +14,7 @@ export function RightSidebar({ className }: RightSidebarProps) {
       {/* Profile Card */}
       <div className="text-center">
         <img 
-          src={profile.avatar} 
+          src="/src/assets/avatar.jpg" 
           alt={profile.name}
           className="w-20 h-20 rounded-full mx-auto mb-4 object-cover"
         />
