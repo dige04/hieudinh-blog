@@ -62,9 +62,9 @@ const Index = () => {
         </div>
 
         {/* Blog Posts List */}
-        <div className="py-6 md:py-8">
+        <div className="py-4 md:py-6">
           {filteredPosts.length > 0 ? (
-            <div className="space-y-6">
+            <div className="divide-y divide-border">
               {filteredPosts.map((post) => (
                 <BlogCard key={post.id} post={post} />
               ))}
