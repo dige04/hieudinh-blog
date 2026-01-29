@@ -1,54 +1,69 @@
 
-# Thêm Card Blog vào trang Link Bio
+# Đơn giản hóa trang Blog
 
 ## Tổng quan
-Thêm một card "Blog" vào bento grid của trang About (trang mặc định `/`) để người dùng có thể click vào đó và chuyển sang trang blog `/blog`. Đây sẽ giống như kiểu link-in-bio phổ biến.
+Xóa 2 sidebar (trái và phải) khỏi trang `/blog`, chỉ giữ lại phần hero section ở trên cùng và làm cho nó có thể click để quay về trang chủ About (`/`).
 
 ## Thay đổi
 
-### 1. Cập nhật trang About (`src/pages/About.tsx`)
+### 1. Cập nhật `src/pages/Index.tsx`
 
-**Thêm icon và card Blog:**
-- Import thêm icon `PenSquare` từ lucide-react
-- Thêm một card Blog mới vào bento grid với:
-  - Kích thước: `col-span-2 md:col-span-4` (chiếm toàn bộ chiều ngang)
-  - Icon bút + chữ "Blog" hoặc "Bài viết"
-  - Link đến `/blog`
-  - Style tương tự các card khác với hover effect
+**Xóa bỏ:**
+- Import `LeftSidebar` và `RightSidebar`
+- Component `<LeftSidebar />` và `<RightSidebar />` trong JSX
+- Bỏ wrapper `<div className="flex">` vì không cần layout 3 cột nữa
 
-**Xóa link "Quay lại Blog":**
-- Bỏ phần footer link vì không còn cần thiết nữa (trang About giờ là trang chính)
+**Cập nhật Hero Section:**
+- Bọc phần profile (avatar + tên + bio) trong thẻ `<a href="/">` để click vào sẽ quay về trang About
+- Thêm `cursor-pointer` và `hover:opacity-80` để người dùng biết có thể click được
 
-### 2. Vị trí card Blog trong grid
-
-Đề xuất đặt card Blog ở cuối grid, sau card Email:
+### 2. Layout mới
 
 ```text
-┌─────────────────┬───────┬───────┐
-│                 │Threads│GitHub │
-│  Profile Card   ├───────┼───────┤
-│                 │LinkedIn│Insta │
-├────────┬────────┼───────┴───────┤
-│Location│  Work  │               │
-├────────┴────────┤               │
-│      Email      │               │
-├─────────────────┴───────────────┤
-│           📝 Blog               │
-└─────────────────────────────────┘
+┌─────────────────────────────────────┐
+│  👤 Hieu Dinh (click → về /)       │
+│     Solopreneur                     │
+│     [Social Links]                  │
+├─────────────────────────────────────┤
+│  🔍 Search   [Tags filter]          │
+├─────────────────────────────────────┤
+│  📄 Blog Post 1                     │
+│  ─────────────────────────          │
+│  📄 Blog Post 2                     │
+│  ─────────────────────────          │
+│  📄 Blog Post 3                     │
+└─────────────────────────────────────┘
 ```
 
-## Chi tiết kỹ thuật
+### 3. Chi tiết kỹ thuật
 
 ```tsx
-// Thêm import
-import { PenSquare } from "lucide-react";
+// Xóa imports không cần
+// import { LeftSidebar } from "@/components/blog/LeftSidebar";
+// import { RightSidebar } from "@/components/blog/RightSidebar";
 
-// Thêm card Blog sau Email card
-<a 
-  href="/blog"
-  className="col-span-2 md:col-span-4 row-span-1 bg-background rounded-3xl p-6 flex items-center justify-center gap-3 border border-border hover:bg-muted/50 transition-colors group"
->
-  <PenSquare className="w-5 h-5 text-foreground group-hover:scale-110 transition-transform" />
-  <span className="text-foreground font-medium">Blog</span>
-</a>
+// Hero Section với link về trang chủ
+<div className="hidden lg:block px-8 py-12 border-b border-border">
+  <div className="max-w-2xl mx-auto">
+    <a href="/" className="flex items-center gap-4 mb-6 hover:opacity-80 transition-opacity">
+      <img 
+        src={profile.avatar} 
+        alt={profile.name}
+        className="w-16 h-16 rounded-full object-cover"
+      />
+      <div>
+        <h1 className="text-2xl font-bold text-foreground">{profile.name}</h1>
+        <p className="text-muted-foreground">{profile.bio}</p>
+      </div>
+    </a>
+    <SocialLinks links={profile.social} />
+  </div>
+</div>
+
+// Căn giữa nội dung chính vì không còn sidebar
+<main className="flex-1 min-w-0 max-w-4xl mx-auto">
 ```
+
+### 4. Cập nhật MobileHeader
+
+Cũng cần làm cho phần profile trong mobile header có thể click về trang chủ.
