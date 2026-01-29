@@ -98,7 +98,7 @@ export const tags = [
 
 export const profile = {
   name: "Hieu Dinh",
-  bio: "Solopreneur | Data & AI Enthusiast | Building things that matter.",
+  bio: "Solopreneur | AI Enthusiast",
   avatar: "/src/assets/avatar.jpg",
   location: "Hanoi, Vietnam",
   work: "Solopreneur",

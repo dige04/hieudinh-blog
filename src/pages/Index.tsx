@@ -1,14 +1,16 @@
 import { useState, useMemo } from "react";
+import { Search } from "lucide-react";
 import { BlogCard } from "@/components/blog/BlogCard";
-import { SearchBar } from "@/components/blog/SearchBar";
 import { TagFilter } from "@/components/blog/TagFilter";
 import { SocialLinks } from "@/components/blog/SocialLinks";
+import { SearchOverlay } from "@/components/blog/SearchOverlay";
 import { blogPosts, tags, profile } from "@/data/blogData";
 import avatar from "@/assets/avatar.jpg";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTag, setSelectedTag] = useState("All");
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const filteredPosts = useMemo(() => {
     return blogPosts.filter((post) => {
@@ -39,13 +41,20 @@ const Index = () => {
           <SocialLinks links={profile.social} size="sm" />
         </div>
 
-        {/* Search & Filter - unified responsive */}
+        {/* Search Icon & Categories */}
         <div className="py-4 md:py-6 border-b border-border">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-            <div className="w-full sm:w-64">
-              <SearchBar value={searchQuery} onChange={setSearchQuery} />
-            </div>
-            <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+          <div className="flex items-center gap-3">
+            {/* Search Icon Button */}
+            <button
+              onClick={() => setIsSearchOpen(true)}
+              className="p-2 hover:bg-secondary rounded-full transition-colors flex-shrink-0"
+              aria-label="Tìm kiếm"
+            >
+              <Search className="h-5 w-5 stroke-[2.5] text-foreground" />
+            </button>
+
+            {/* Categories - horizontal scroll */}
+            <div className="flex-1 overflow-x-auto -mr-4 pr-4">
               <TagFilter tags={tags} selectedTag={selectedTag} onTagSelect={setSelectedTag} />
             </div>
           </div>
@@ -66,6 +75,18 @@ const Index = () => {
           )}
         </div>
       </main>
+
+      {/* Fullscreen Search Overlay */}
+      <SearchOverlay
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+        tags={tags}
+        selectedTag={selectedTag}
+        onTagSelect={setSelectedTag}
+        results={filteredPosts}
+      />
     </div>
   );
 };
