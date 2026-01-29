@@ -1,8 +1,8 @@
-import { Twitter, Github, Linkedin, Instagram } from "lucide-react";
+import { Github, Linkedin, Instagram, AtSign } from "lucide-react";
 
 interface SocialLinksProps {
   links: {
-    twitter?: string;
+    threads?: string;
     github?: string;
     linkedin?: string;
     instagram?: string;
@@ -16,14 +16,14 @@ export function SocialLinks({ links, size = "md" }: SocialLinksProps) {
 
   return (
     <div className={`flex items-center ${containerClass}`}>
-      {links.twitter && (
+      {links.threads && (
         <a 
-          href={links.twitter} 
+          href={links.threads} 
           target="_blank" 
           rel="noopener noreferrer"
           className="text-muted-foreground hover:text-foreground transition-colors"
         >
-          <Twitter className={iconSize} />
+          <AtSign className={iconSize} />
         </a>
       )}
       {links.github && (

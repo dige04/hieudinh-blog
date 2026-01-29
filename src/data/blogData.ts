@@ -97,13 +97,15 @@ export const tags = [
 ];
 
 export const profile = {
-  name: "Hung Huc",
-  bio: "Frontend Developer & Designer. Đam mê tạo ra những sản phẩm đẹp và hữu ích.",
-  avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&crop=face",
+  name: "Hieu Dinh",
+  bio: "Solopreneur | Data & AI Enthusiast | Building things that matter.",
+  avatar: "/src/assets/avatar.jpg",
+  location: "Hanoi, Vietnam",
+  work: "Solopreneur",
   social: {
-    twitter: "https://twitter.com",
-    github: "https://github.com",
-    linkedin: "https://linkedin.com",
-    instagram: "https://instagram.com"
+    threads: "https://threads.net/@to.hieuuu",
+    github: "https://github.com/dige04",
+    linkedin: "https://www.linkedin.com/in/dinhthanhhieu/",
+    instagram: "https://instagram.com/to.hieuuu"
   }
 };
