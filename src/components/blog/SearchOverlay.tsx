@@ -88,9 +88,9 @@ export function SearchOverlay({
       {/* Search Results */}
       <div className="flex-1 overflow-y-auto px-4">
         {results.length > 0 ? (
-          <div className="divide-y divide-border">
+          <div className="divide-y divide-border" onClick={onClose}>
             {results.map((post) => (
-              <BlogCard key={post.id} post={post} onClick={onClose} />
+              <BlogCard key={post.id} post={post} />
             ))}
           </div>
         ) : searchQuery ? (
