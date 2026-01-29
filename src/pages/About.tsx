@@ -20,14 +20,14 @@ const About = () => {
             <p className="text-muted-foreground text-sm max-w-xs">{profile.bio}</p>
           </div>
 
-          {/* Threads Card */}
+          {/* LinkedIn Card */}
           <a 
-            href={profile.social.threads}
+            href={profile.social.linkedin}
             target="_blank"
             rel="noopener noreferrer"
             className="col-span-1 row-span-1 bg-background rounded-3xl p-6 flex items-center justify-center border border-border hover:bg-muted/50 transition-colors group"
           >
-            <AtSign className="w-8 h-8 text-foreground group-hover:scale-110 transition-transform" />
+            <Linkedin className="w-8 h-8 text-foreground group-hover:scale-110 transition-transform" />
           </a>
 
           {/* GitHub Card */}
@@ -40,14 +40,14 @@ const About = () => {
             <Github className="w-8 h-8 text-foreground group-hover:scale-110 transition-transform" />
           </a>
 
-          {/* LinkedIn Card */}
+          {/* Threads Card */}
           <a 
-            href={profile.social.linkedin}
+            href={profile.social.threads}
             target="_blank"
             rel="noopener noreferrer"
             className="col-span-1 row-span-1 bg-background rounded-3xl p-6 flex items-center justify-center border border-border hover:bg-muted/50 transition-colors group"
           >
-            <Linkedin className="w-8 h-8 text-foreground group-hover:scale-110 transition-transform" />
+            <AtSign className="w-8 h-8 text-foreground group-hover:scale-110 transition-transform" />
           </a>
 
           {/* Instagram Card */}

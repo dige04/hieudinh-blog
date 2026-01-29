@@ -16,14 +16,14 @@ export function SocialLinks({ links, size = "md" }: SocialLinksProps) {
 
   return (
     <div className={`flex items-center ${containerClass}`}>
-      {links.threads && (
+      {links.linkedin && (
         <a 
-          href={links.threads} 
+          href={links.linkedin} 
           target="_blank" 
           rel="noopener noreferrer"
           className="text-muted-foreground hover:text-foreground transition-colors"
         >
-          <AtSign className={iconSize} />
+          <Linkedin className={iconSize} />
         </a>
       )}
       {links.github && (
@@ -36,14 +36,14 @@ export function SocialLinks({ links, size = "md" }: SocialLinksProps) {
           <Github className={iconSize} />
         </a>
       )}
-      {links.linkedin && (
+      {links.threads && (
         <a 
-          href={links.linkedin} 
+          href={links.threads} 
           target="_blank" 
           rel="noopener noreferrer"
           className="text-muted-foreground hover:text-foreground transition-colors"
         >
-          <Linkedin className={iconSize} />
+          <AtSign className={iconSize} />
         </a>
       )}
       {links.instagram && (
