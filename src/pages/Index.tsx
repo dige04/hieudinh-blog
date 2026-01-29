@@ -4,6 +4,7 @@ import { BlogCard } from "@/components/blog/BlogCard";
 import { TagFilter } from "@/components/blog/TagFilter";
 import { SocialLinks } from "@/components/blog/SocialLinks";
 import { SearchOverlay } from "@/components/blog/SearchOverlay";
+import { SubscribeSection } from "@/components/blog/SubscribeSection";
 import { blogPosts, tags, profile } from "@/data/blogData";
 import avatar from "@/assets/avatar.jpg";
 
@@ -61,9 +62,9 @@ const Index = () => {
         </div>
 
         {/* Blog Posts List */}
-        <div className="py-4 md:py-6">
+        <div className="py-6 md:py-8">
           {filteredPosts.length > 0 ? (
-            <div className="divide-y divide-border">
+            <div className="space-y-6">
               {filteredPosts.map((post) => (
                 <BlogCard key={post.id} post={post} />
               ))}
@@ -74,6 +75,9 @@ const Index = () => {
             </div>
           )}
         </div>
+
+        {/* Subscribe Section */}
+        <SubscribeSection />
       </main>
 
       {/* Fullscreen Search Overlay */}

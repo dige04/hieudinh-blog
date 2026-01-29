@@ -45,7 +45,7 @@ const tagColorClasses: Record<string, { active: string; inactive: string }> = {
 
 export function TagFilter({ tags, selectedTag, onTagSelect }: TagFilterProps) {
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex gap-2 whitespace-nowrap">
       {tags.map((tag) => {
         const isActive = selectedTag === tag.name;
         const colorClass = tagColorClasses[tag.color];
@@ -54,7 +54,7 @@ export function TagFilter({ tags, selectedTag, onTagSelect }: TagFilterProps) {
           <Badge
             key={tag.name}
             className={cn(
-              "cursor-pointer border-0 transition-colors font-medium",
+              "cursor-pointer border-0 transition-colors font-medium flex-shrink-0",
               isActive ? colorClass.active : colorClass.inactive
             )}
             onClick={() => onTagSelect(tag.name)}

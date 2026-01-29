@@ -8,34 +8,31 @@ interface BlogCardProps {
 export function BlogCard({ post, onClick }: BlogCardProps) {
   return (
     <article 
-      className="group cursor-pointer py-6 border-b border-border last:border-b-0 flex gap-6"
+      className="group cursor-pointer py-6 first:pt-0 last:pb-0 flex gap-4 md:gap-6"
       onClick={onClick}
     >
-      {/* Content */}
-      <div className="flex-1 min-w-0">
-        <span className="text-sm text-muted-foreground uppercase tracking-wide">
-          {post.tag}
-        </span>
-        <h2 className="text-xl font-semibold text-foreground group-hover:underline transition-colors mt-1 mb-2 line-clamp-2">
-          {post.title}
-        </h2>
-        <p className="text-muted-foreground text-sm line-clamp-2 mb-3">
-          {post.excerpt}
-        </p>
-        <div className="flex items-center gap-3 text-xs text-muted-foreground">
-          <span>{post.date}</span>
-          <span>•</span>
-          <span>{post.readTime}</span>
-        </div>
-      </div>
-
-      {/* Thumbnail */}
+      {/* Thumbnail - Left side, horizontal & rounded */}
       <div className="flex-shrink-0">
         <img 
           src={post.thumbnail} 
           alt={post.title}
-          className="w-24 h-24 md:w-28 md:h-28 object-cover rounded"
+          className="w-28 h-20 md:w-40 md:h-28 object-cover rounded-lg"
         />
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 min-w-0 flex flex-col justify-center">
+        <h2 className="text-base md:text-lg font-semibold text-foreground group-hover:underline transition-colors mb-1 md:mb-2 line-clamp-2">
+          {post.title}
+        </h2>
+        <p className="text-muted-foreground text-sm line-clamp-2 mb-2 hidden sm:block">
+          {post.excerpt}
+        </p>
+        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+          <span>{post.date}</span>
+          <span>·</span>
+          <span>{post.readTime}</span>
+        </div>
       </div>
     </article>
   );
