@@ -1,7 +1,31 @@
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
+import { useMemo } from "react";
+import DOMPurify from "dompurify";
 import { blogPosts, profile } from "@/data/blogData";
 import avatar from "@/assets/avatar.jpg";
+
+// Sanitized content component to prevent XSS
+const SanitizedContent = ({ content }: { content: string }) => {
+  const sanitizedContent = useMemo(() => {
+    return DOMPurify.sanitize(content, {
+      ALLOWED_TAGS: ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'a', 'strong', 'em', 'code', 'pre', 'blockquote', 'img', 'br', 'span', 'div'],
+      ALLOWED_ATTR: ['href', 'src', 'alt', 'class', 'target', 'rel'],
+      ALLOW_DATA_ATTR: false,
+    });
+  }, [content]);
+
+  return (
+    <div
+      className="prose prose-lg prose-slate dark:prose-invert max-w-none font-serif
+        prose-headings:font-bold prose-headings:font-sans
+        prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+        prose-img:rounded-xl prose-img:shadow-md
+        prose-code:bg-muted prose-code:px-1 prose-code:py-0.5 prose-code:rounded-md prose-code:font-normal prose-code:before:content-none prose-code:after:content-none"
+      dangerouslySetInnerHTML={{ __html: sanitizedContent }}
+    />
+  );
+};
 
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -60,15 +84,8 @@ const BlogPost = () => {
           />
         </div>
 
-        {/* Article Content */}
-        <div
-          className="prose prose-lg prose-slate dark:prose-invert max-w-none font-serif
-            prose-headings:font-bold prose-headings:font-sans
-            prose-a:text-primary prose-a:no-underline hover:prose-a:underline
-            prose-img:rounded-xl prose-img:shadow-md
-            prose-code:bg-muted prose-code:px-1 prose-code:py-0.5 prose-code:rounded-md prose-code:font-normal prose-code:before:content-none prose-code:after:content-none"
-          dangerouslySetInnerHTML={{ __html: post.content }}
-        />
+        {/* Article Content - Sanitized for XSS protection */}
+        <SanitizedContent content={post.content} />
 
         {/* Author Section */}
         <footer className="mt-12 pt-8 border-t border-border">

@@ -27,6 +27,9 @@ export function SubscribeSection() {
         <p className="text-sm text-muted-foreground">
           Nhận thông báo khi có bài viết mới qua email.
         </p>
+        <p className="text-xs text-muted-foreground/60 mt-1">
+          (Tính năng demo - chưa hoạt động thực tế)
+        </p>
       </div>
 
       {isSubscribed ? (
