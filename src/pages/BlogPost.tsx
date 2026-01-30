@@ -24,8 +24,8 @@ const BlogPost = () => {
     <div className="min-h-screen bg-background">
       <article className="max-w-2xl mx-auto px-4 md:px-6 lg:px-8 py-8 md:py-12">
         {/* Back Link */}
-        <Link 
-          to="/blog" 
+        <Link
+          to="/blog"
           className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -41,11 +41,11 @@ const BlogPost = () => {
             <span>·</span>
             <span>{post.readTime}</span>
           </div>
-          
+
           <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-6 leading-tight">
             {post.title}
           </h1>
-          
+
           <p className="text-lg text-muted-foreground">
             {post.excerpt}
           </p>
@@ -53,30 +53,28 @@ const BlogPost = () => {
 
         {/* Featured Image */}
         <div className="mb-8">
-          <img 
-            src={post.thumbnail} 
+          <img
+            src={post.thumbnail}
             alt={post.title}
             className="w-full h-auto rounded-lg object-cover aspect-video"
           />
         </div>
 
         {/* Article Content */}
-        <div className="prose prose-neutral dark:prose-invert max-w-none">
-          <p className="text-foreground leading-relaxed">
-            {post.content}
-          </p>
-          
-          {/* Placeholder content for demo */}
-          <p className="text-muted-foreground leading-relaxed mt-6">
-            Đây là nội dung mẫu cho bài viết. Trong thực tế, nội dung chi tiết sẽ được lấy từ database hoặc CMS và có thể bao gồm các định dạng phong phú như heading, danh sách, code blocks, hình ảnh, v.v.
-          </p>
-        </div>
+        <div
+          className="prose prose-lg prose-slate dark:prose-invert max-w-none font-serif
+            prose-headings:font-bold prose-headings:font-sans
+            prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+            prose-img:rounded-xl prose-img:shadow-md
+            prose-code:bg-muted prose-code:px-1 prose-code:py-0.5 prose-code:rounded-md prose-code:font-normal prose-code:before:content-none prose-code:after:content-none"
+          dangerouslySetInnerHTML={{ __html: post.content }}
+        />
 
         {/* Author Section */}
         <footer className="mt-12 pt-8 border-t border-border">
           <Link to="/" className="flex items-center gap-4 hover:opacity-80 transition-opacity">
-            <img 
-              src={avatar} 
+            <img
+              src={avatar}
               alt={profile.name}
               className="w-12 h-12 rounded-full object-cover"
             />

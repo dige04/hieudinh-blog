@@ -15,7 +15,7 @@ const Index = () => {
 
   const filteredPosts = useMemo(() => {
     return blogPosts.filter((post) => {
-      const matchesSearch = 
+      const matchesSearch =
         post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesTag = selectedTag === "All" || post.tag === selectedTag;
@@ -29,8 +29,8 @@ const Index = () => {
         {/* Hero Section - unified for all devices */}
         <div className="py-8 md:py-12 border-b border-border">
           <a href="/" className="flex items-center gap-3 md:gap-4 mb-4 md:mb-6 hover:opacity-80 transition-opacity">
-            <img 
-              src={avatar} 
+            <img
+              src={avatar}
               alt={profile.name}
               className="w-12 h-12 md:w-16 md:h-16 rounded-full object-cover flex-shrink-0"
             />
@@ -55,7 +55,7 @@ const Index = () => {
             </button>
 
             {/* Categories - horizontal scroll */}
-            <div className="flex-1 overflow-x-auto -mr-4 pr-4">
+            <div className="flex-1 overflow-x-auto no-scrollbar">
               <TagFilter tags={tags} selectedTag={selectedTag} onTagSelect={setSelectedTag} />
             </div>
           </div>
