@@ -3,7 +3,9 @@
 ## Overview
 Fork aigc-weekly architecture to create automated Vietnamese AI Weekly newsletter platform.
 
-**Stack**: Next.js 15 + Payload CMS 3.0 + Supabase (PostgreSQL/Storage) + Cloud Run (Agents) + Cloudflare Pages
+**Stack**: Next.js 15 + Payload CMS 3.0 + Supabase (PostgreSQL + Storage) + Vercel/Cloudflare Pages
+
+**Decision**: Using Supabase (already enabled in Lovable) instead of Cloudflare D1/R2.
 
 **Cost**: $0/month (GCP credits + free tiers)
 
