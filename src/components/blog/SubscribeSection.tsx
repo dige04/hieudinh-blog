@@ -1,21 +1,42 @@
 import { useState } from "react";
+import { toast } from "sonner";
+
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 
 export function SubscribeSection() {
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
-    
+
     setIsSubmitting(true);
-    // Simulate subscription
-    setTimeout(() => {
-      setIsSubmitting(false);
+
+    try {
+      // Call Supabase Edge Function
+      const response = await fetch(`${SUPABASE_URL}/functions/v1/subscribe`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Đăng ký thất bại");
+      }
+
       setIsSubscribed(true);
       setEmail("");
-    }, 1000);
+      toast.success(data.message || "Đăng ký thành công!");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Đã xảy ra lỗi";
+      toast.error(message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -28,7 +49,7 @@ export function SubscribeSection() {
           Nhận thông báo khi có bài viết mới qua email.
         </p>
         <p className="text-xs text-muted-foreground/60 mt-1">
-          (Tính năng demo - chưa hoạt động thực tế)
+          Không spam, chỉ gửi khi có bài mới.
         </p>
       </div>
 
