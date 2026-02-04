@@ -2,6 +2,7 @@
 import { withPayload } from '@payloadcms/next/withPayload'
 
 const nextConfig = {
+  output: 'standalone',
   experimental: {
     reactCompiler: false,
   },
@@ -10,6 +11,10 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: '**.supabase.co',
+      },
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
       },
     ],
   },

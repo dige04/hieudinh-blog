@@ -1,0 +1,27 @@
+# Node
+node_modules/
+
+# Next.js build output
+.next/
+out/
+
+# Local files
+.env
+.env.local
+.env*.local
+.dev.vars
+
+# Cloudflare
+.open-next/
+.wrangler/
+
+# IDE
+.idea/
+.vscode/
+
+# Git
+.git/
+
+# Misc
+*.log
+.DS_Store

@@ -26,11 +26,13 @@ Fork aigc-weekly architecture to create automated Vietnamese AI Weekly newslette
 
 | Phase | Status | Est. | File |
 |-------|--------|------|------|
-| 01: Infrastructure Setup | pending | 4h | [phase-01-infrastructure.md](./phase-01-infrastructure.md) |
-| 02: Next.js + Payload CMS | pending | 6h | [phase-02-nextjs-payload.md](./phase-02-nextjs-payload.md) |
-| 03: Content Migration | pending | 2h | [phase-03-content-migration.md](./phase-03-content-migration.md) |
+| 01: Infrastructure Setup | ✅ done | 4h | [phase-01-infrastructure.md](./phase-01-infrastructure.md) |
+| 02: Next.js + Payload CMS | ✅ done | 6h | [phase-02-nextjs-payload.md](./phase-02-nextjs-payload.md) |
+| 03: Content Migration | 🔄 manual | 2h | [phase-03-content-migration.md](./phase-03-content-migration.md) |
 | 04: Agent System | pending | 8h | [phase-04-agent-system.md](./phase-04-agent-system.md) |
 | 05: Automation & Deploy | pending | 4h | [phase-05-automation-deploy.md](./phase-05-automation-deploy.md) |
+
+**Progress**: Phase 01-02 complete. Next.js + Payload CMS project at `apps/web/`.
 
 **Total Estimate**: 24 hours
 
