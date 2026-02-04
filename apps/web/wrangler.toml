@@ -7,7 +7,7 @@ pages_build_output_dir = ".open-next/cloudflare"
 [[d1_databases]]
 binding = "DB"
 database_name = "vn-ai-weekly-db"
-database_id = "" # Fill after running: wrangler d1 create vn-ai-weekly-db
+database_id = "ce083859-07d4-4641-bf3a-6fa49fcbc88d"
 
 # R2 Storage binding
 [[r2_buckets]]
