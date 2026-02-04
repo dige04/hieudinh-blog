@@ -7,6 +7,7 @@ import { RichText } from '@/components/RichText'
 import { ReadingProgress } from '@/components/ReadingProgress'
 import { SocialShare } from '@/components/SocialShare'
 import { SubscribeSection } from '@/components/blog/SubscribeSection'
+import { BlogPostJsonLd } from '@/components/JsonLd'
 
 export const dynamic = 'force-dynamic'
 
@@ -30,9 +31,29 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: 'Not Found' }
   }
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hieudinh.com'
+  const url = `${siteUrl}/blog/${slug}`
+
   return {
     title: `${post.title} | VN AI Weekly`,
     description: post.excerpt,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      type: 'article',
+      publishedTime: post.publishedAt,
+      modifiedTime: post.updatedAt,
+      url,
+      siteName: 'VN AI Weekly',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt,
+    },
+    alternates: {
+      canonical: url,
+    },
   }
 }
 
@@ -76,6 +97,7 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <>
+      <BlogPostJsonLd post={post} url={postUrl} />
       <ReadingProgress />
       <main className="container mx-auto max-w-3xl px-4 py-12">
         <article>
