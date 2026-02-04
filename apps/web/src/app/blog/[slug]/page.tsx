@@ -1,13 +1,16 @@
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { notFound } from 'next/navigation'
+import { draftMode } from 'next/headers'
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import { RichText } from '@/components/RichText'
 import { ReadingProgress } from '@/components/ReadingProgress'
 import { SocialShare } from '@/components/SocialShare'
 import { SubscribeSection } from '@/components/blog/SubscribeSection'
+import { RelatedPosts } from '@/components/RelatedPosts'
 import { BlogPostJsonLd } from '@/components/JsonLd'
+import { PreviewBanner } from '@/components/PreviewBanner'
 
 export const dynamic = 'force-dynamic'
 
@@ -59,17 +62,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params
+  const { isEnabled: isDraftMode } = await draftMode()
   const payload = await getPayload({ config })
 
   const result = await payload.find({
     collection: 'weekly',
     where: { slug: { equals: slug } },
     limit: 1,
+    draft: isDraftMode,
   })
 
   const post = result.docs[0]
 
   if (!post) {
+    notFound()
+  }
+
+  // In draft mode, allow viewing unpublished posts
+  if (!isDraftMode && post.status !== 'published') {
     notFound()
   }
 
@@ -99,6 +109,7 @@ export default async function BlogPostPage({ params }: Props) {
     <>
       <BlogPostJsonLd post={post} url={postUrl} />
       <ReadingProgress />
+      {isDraftMode && <PreviewBanner />}
       <main className="container mx-auto max-w-3xl px-4 py-12">
         <article>
           <header className="mb-8">
@@ -160,6 +171,9 @@ export default async function BlogPostPage({ params }: Props) {
           {/* Social Share */}
           <SocialShare title={post.title} url={postUrl} />
         </article>
+
+        {/* Related Posts */}
+        <RelatedPosts currentSlug={post.slug} tag={post.tag || 'ai-weekly'} />
 
         {/* Subscribe Section */}
         <SubscribeSection />

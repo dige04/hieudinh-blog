@@ -22,8 +22,8 @@ Complete remaining blog features: Lexical rich text rendering, newsletter subscr
 | 01 | [Blog Post Page](./phase-01-blog-post-page.md) | P0 | ✅ Done | 3h |
 | 02 | [Newsletter Subscription](./phase-02-newsletter-subscription.md) | P0 | ✅ Done | 2h |
 | 03 | [SEO & OpenGraph](./phase-03-seo-opengraph.md) | P1 | ✅ Done | 2h |
-| 04 | [Related Posts](./phase-04-related-posts.md) | P2 | Pending | 1.5h |
-| 05 | [Draft Preview](./phase-05-draft-preview.md) | P2 | Pending | 1.5h |
+| 04 | [Related Posts](./phase-04-related-posts.md) | P2 | ✅ Done | 1.5h |
+| 05 | [Draft Preview](./phase-05-draft-preview.md) | P2 | ✅ Done | 1.5h |
 
 ## Dependencies
 
