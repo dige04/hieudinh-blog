@@ -1,20 +1,5 @@
-import { getPayload } from 'payload'
-import config from '@payload-config'
-import { BlogHome } from '@/components/blog/BlogHome'
+import { LinkInBio } from '@/components/LinkInBio'
 
-export const dynamic = 'force-dynamic'
-
-export default async function HomePage() {
-  const payload = await getPayload({ config })
-
-  const posts = await payload.find({
-    collection: 'weekly',
-    where: {
-      status: { equals: 'published' },
-    },
-    sort: '-publishedAt',
-    limit: 50,
-  })
-
-  return <BlogHome posts={posts.docs} />
+export default function HomePage() {
+  return <LinkInBio />
 }
