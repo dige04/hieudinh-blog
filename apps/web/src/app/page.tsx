@@ -2,6 +2,9 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import Link from 'next/link'
 
+// Force dynamic rendering - D1 database requires runtime
+export const dynamic = 'force-dynamic'
+
 export default async function HomePage() {
   const payload = await getPayload({ config })
 

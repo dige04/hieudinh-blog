@@ -3,6 +3,9 @@ import config from '@payload-config'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 
+// Force dynamic rendering - D1 database requires runtime
+export const dynamic = 'force-dynamic'
+
 type Props = {
   params: Promise<{ slug: string }>
 }

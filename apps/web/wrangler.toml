@@ -1,0 +1,18 @@
+name = "vn-ai-weekly"
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = ".open-next/cloudflare"
+
+# D1 Database binding
+[[d1_databases]]
+binding = "DB"
+database_name = "vn-ai-weekly-db"
+database_id = "" # Fill after running: wrangler d1 create vn-ai-weekly-db
+
+# R2 Storage binding
+[[r2_buckets]]
+binding = "R2"
+bucket_name = "vn-ai-weekly-media"
+
+# For local dev secrets, create .dev.vars file with:
+# PAYLOAD_SECRET=your-secret-here

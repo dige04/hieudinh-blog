@@ -1,9 +1,12 @@
-import { buildConfig } from 'payload'
-import { postgresAdapter } from '@payloadcms/db-postgres'
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
-import { s3Storage } from '@payloadcms/storage-s3'
+import fs from 'fs'
 import path from 'path'
+import { sqliteD1Adapter } from '@payloadcms/db-d1-sqlite'
+import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
+import { CloudflareContext, getCloudflareContext } from '@opennextjs/cloudflare'
+import { GetPlatformProxyOptions } from 'wrangler'
+import { r2Storage } from '@payloadcms/storage-r2'
 
 import { Users } from './collections/Users'
 import { Weekly } from './collections/Weekly'
@@ -12,6 +15,15 @@ import { SiteConfig } from './globals/SiteConfig'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+const realpath = (value: string) => (fs.existsSync(value) ? fs.realpathSync(value) : undefined)
+
+const isCLI = process.argv.some((value) => realpath(value)?.endsWith(path.join('payload', 'bin.js')))
+const isProduction = process.env.NODE_ENV === 'production'
+
+const cloudflare =
+  isCLI || !isProduction
+    ? await getCloudflareContextFromWrangler()
+    : await getCloudflareContext({ async: true })
 
 export default buildConfig({
   admin: {
@@ -22,32 +34,27 @@ export default buildConfig({
   },
   collections: [Users, Weekly, Media],
   globals: [SiteConfig],
-  db: postgresAdapter({
-    pool: {
-      connectionString: process.env.DATABASE_URL || '',
-    },
-  }),
   editor: lexicalEditor(),
-  plugins: [
-    // Supabase Storage is S3-compatible
-    s3Storage({
-      collections: {
-        media: true,
-      },
-      bucket: process.env.SUPABASE_STORAGE_BUCKET || 'media',
-      config: {
-        credentials: {
-          accessKeyId: process.env.SUPABASE_S3_ACCESS_KEY_ID || '',
-          secretAccessKey: process.env.SUPABASE_S3_SECRET_ACCESS_KEY || '',
-        },
-        region: process.env.SUPABASE_S3_REGION || 'auto',
-        endpoint: process.env.SUPABASE_S3_ENDPOINT || '',
-        forcePathStyle: true,
-      },
-    }),
-  ],
   secret: process.env.PAYLOAD_SECRET || 'your-secret-key-min-32-chars-long',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
+  db: sqliteD1Adapter({ binding: cloudflare.env.DB }),
+  plugins: [
+    r2Storage({
+      bucket: cloudflare.env.R2,
+      collections: { media: true },
+    }),
+  ],
 })
+
+// Get Cloudflare context from wrangler for local dev
+function getCloudflareContextFromWrangler(): Promise<CloudflareContext> {
+  return import(/* webpackIgnore: true */ `${'__wrangler'.replaceAll('_', '')}`).then(
+    ({ getPlatformProxy }) =>
+      getPlatformProxy({
+        environment: process.env.CLOUDFLARE_ENV,
+        remoteBindings: isProduction,
+      } satisfies GetPlatformProxyOptions),
+  )
+}
