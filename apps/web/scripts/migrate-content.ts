@@ -1,8 +1,14 @@
 // Migration script: Import VN AI Weekly posts from blogData.ts to Payload CMS
 // Run with: npx tsx scripts/migrate-content.ts
 
-import { getPayload } from 'payload'
-import config from '../src/payload.config'
+import * as dotenv from 'dotenv'
+dotenv.config({ path: '.env.local' })
+
+console.log('Starting migration...')
+
+// Dynamic import to ensure env vars are loaded first
+const { getPayload } = await import('payload')
+const { default: config } = await import('../src/payload.config')
 
 const posts = [
   {
@@ -48,13 +54,13 @@ const posts = [
 ]
 
 async function migrate() {
-  console.log('Starting migration...')
-
   const payload = await getPayload({ config })
+
+  const allDocs = await payload.find({ collection: 'weekly', limit: 100 })
+  console.log(`Database currently has ${allDocs.totalDocs} weekly posts`)
 
   for (const post of posts) {
     try {
-      // Check if post already exists
       const existing = await payload.find({
         collection: 'weekly',
         where: { slug: { equals: post.slug } },
@@ -66,7 +72,6 @@ async function migrate() {
         continue
       }
 
-      // Create the post
       await payload.create({
         collection: 'weekly',
         data: {
