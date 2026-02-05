@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { Linkedin, Github, Instagram, AtSign, Mail, PenSquare } from 'lucide-react'
+import { Linkedin, Github, Instagram, AtSign, Mail, PenSquare, Podcast } from 'lucide-react'
 
 const profile = {
   name: 'Hieu Dinh',
@@ -93,6 +93,15 @@ export function LinkInBio() {
           >
             <PenSquare className="w-5 h-5 text-gray-800" strokeWidth={1.5} />
             <span className="text-gray-900 font-medium">Blog</span>
+          </Link>
+
+          {/* Podcast Link - full width */}
+          <Link
+            href="/podcast"
+            className="col-span-2 md:col-span-4 bg-white rounded-3xl p-5 flex items-center justify-center gap-3 border border-gray-200 hover:border-gray-300 hover:shadow-sm transition-all"
+          >
+            <Podcast className="w-5 h-5 text-gray-800" strokeWidth={1.5} />
+            <span className="text-gray-900 font-medium">Tech Digest Podcast</span>
           </Link>
         </div>
       </main>

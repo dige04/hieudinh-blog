@@ -8,6 +8,7 @@ import { fileURLToPath } from 'url'
 import { Users } from './collections/Users'
 import { Weekly } from './collections/Weekly'
 import { Media } from './collections/Media'
+import { Podcast } from './collections/Podcast'
 import { SiteConfig } from './globals/SiteConfig'
 
 const filename = fileURLToPath(import.meta.url)
@@ -20,7 +21,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Weekly, Media],
+  collections: [Users, Weekly, Media, Podcast],
   globals: [SiteConfig],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || 'your-secret-key-min-32-chars-long',

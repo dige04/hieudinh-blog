@@ -70,6 +70,7 @@ export interface Config {
     users: User;
     weekly: Weekly;
     media: Media;
+    podcast: Podcast;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -80,6 +81,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     weekly: WeeklySelect<false> | WeeklySelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    podcast: PodcastSelect<false> | PodcastSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -219,6 +221,53 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "podcast".
+ */
+export interface Podcast {
+  id: number;
+  title: string;
+  slug: string;
+  description: string;
+  transcript?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  audio: number | Media;
+  /**
+   * Duration in seconds
+   */
+  duration?: number | null;
+  coverImage?: (number | null) | Media;
+  sources?:
+    | {
+        hnId?: string | null;
+        title?: string | null;
+        url?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  publishedAt: string;
+  status?: ('draft' | 'published') | null;
+  /**
+   * Play count
+   */
+  listens?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -252,6 +301,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'podcast';
+        value: number | Podcast;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -354,6 +407,32 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "podcast_select".
+ */
+export interface PodcastSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  description?: T;
+  transcript?: T;
+  audio?: T;
+  duration?: T;
+  coverImage?: T;
+  sources?:
+    | T
+    | {
+        hnId?: T;
+        title?: T;
+        url?: T;
+        id?: T;
+      };
+  publishedAt?: T;
+  status?: T;
+  listens?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
