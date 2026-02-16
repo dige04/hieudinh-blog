@@ -1,19 +1,16 @@
 /**
  * VN AI Weekly Content Generator
  *
- * Uses AI to fetch news, summarize in Vietnamese, and generate personal insights.
- * Similar to AIGC Weekly but localized for Vietnamese audience.
+ * Uses AI to fetch RSS items, summarize in Vietnamese, and generate personal insights.
+ * Source feed: AIGC Weekly RSS.
  *
- * Usage: ANTHROPIC_AUTH_TOKEN=proxypal-local ANTHROPIC_BASE_URL=http://127.0.0.1:8317 npx tsx scripts/generate-weekly.ts
+ * Usage: ANTHROPIC_AUTH_TOKEN=sk-dummy ANTHROPIC_BASE_URL=http://127.0.0.1:8317 npx tsx scripts/generate-weekly.ts
  */
 
 import * as dotenv from 'dotenv'
 dotenv.config({ path: '.env.local' })
 
-// News sources to aggregate
-const NEWS_SOURCES = [
-  { name: 'Hacker News', url: 'https://hacker-news.firebaseio.com/v0/topstories.json', type: 'hn' },
-]
+const RSS_FEED_URL = 'https://aigc-weekly.agi.li/rss.xml'
 
 interface NewsItem {
   title: string
@@ -40,11 +37,12 @@ interface LexicalRoot {
     format: ''
     indent: 0
   }
+  [key: string]: unknown
 }
 
 interface LexicalNode {
   type: string
-  version?: number
+  version: number
   children?: LexicalNode[]
   text?: string
   format?: number | string
@@ -56,6 +54,7 @@ interface LexicalNode {
   value?: number
   start?: number
   textFormat?: number
+  [key: string]: unknown
 }
 
 // Get current week number
@@ -68,34 +67,53 @@ function getWeekNumber(): string {
   return `${now.getFullYear()}-w${week.toString().padStart(2, '0')}`
 }
 
-// Fetch top Hacker News stories
-async function fetchHackerNews(limit = 10): Promise<NewsItem[]> {
-  const response = await fetch('https://hacker-news.firebaseio.com/v0/topstories.json')
-  const ids = (await response.json()).slice(0, limit)
+function sanitizeUrl(rawUrl: string | undefined): string {
+  const fallbackUrl = 'https://aigc-weekly.agi.li'
+  if (!rawUrl) return fallbackUrl
 
-  const stories = await Promise.all(
-    ids.map(async (id: number) => {
-      const story = await fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`).then(r => r.json())
-      return {
-        title: story.title,
-        url: story.url || `https://news.ycombinator.com/item?id=${id}`,
-        source: 'Hacker News',
-      }
-    })
-  )
+  try {
+    const parsed = new URL(rawUrl.trim())
+    if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+      return parsed.toString()
+    }
+    return fallbackUrl
+  } catch {
+    return fallbackUrl
+  }
+}
 
-  // Filter AI/tech related
-  const aiKeywords = ['ai', 'llm', 'gpt', 'claude', 'gemini', 'ml', 'machine learning', 'neural', 'openai', 'anthropic', 'model', 'agent', 'coding', 'developer', 'programming']
-  return stories.filter(s =>
-    aiKeywords.some(kw => s.title.toLowerCase().includes(kw))
-  ).slice(0, 5)
+// Fetch items from AIGC Weekly RSS feed
+async function fetchAigcRss(limit = 5): Promise<NewsItem[]> {
+  const response = await fetch(RSS_FEED_URL)
+
+  if (!response.ok) {
+    throw new Error(`RSS fetch failed: ${response.status}`)
+  }
+
+  const xml = await response.text()
+  const itemMatches = xml.match(/<item>[\s\S]*?<\/item>/g) ?? []
+
+  if (itemMatches.length === 0) {
+    throw new Error(`RSS parse failed: zero items found from ${RSS_FEED_URL}`)
+  }
+
+  return itemMatches.slice(0, limit).map(itemXml => {
+    const title = itemXml.match(/<title><!\[CDATA\[(.*?)\]\]><\/title>|<title>(.*?)<\/title>/)?.[1] || itemXml.match(/<title><!\[CDATA\[(.*?)\]\]><\/title>|<title>(.*?)<\/title>/)?.[2] || 'Untitled'
+    const link = itemXml.match(/<link>(.*?)<\/link>/)?.[1]
+
+    return {
+      title: title.trim(),
+      url: sanitizeUrl(link),
+      source: 'AIGC Weekly RSS',
+    }
+  })
 }
 
 // Call AI API to generate content
 async function callAI(prompt: string): Promise<string> {
-  const baseUrl = process.env.ANTHROPIC_BASE_URL || 'http://127.0.0.1:8317'
-  const authToken = process.env.ANTHROPIC_AUTH_TOKEN || 'proxypal-local'
-  const model = process.env.ANTHROPIC_DEFAULT_HAIKU_MODEL || 'gemini-3-pro-preview'
+  const baseUrl = process.env.ANTHROPIC_BASE_URL || 'http://103.90.226.240:8317'
+  const authToken = process.env.ANTHROPIC_AUTH_TOKEN || 'sk-dummy'
+  const model = process.env.ANTHROPIC_DEFAULT_HAIKU_MODEL || 'gpt-5.3-codex'
 
   console.log(`Calling AI at ${baseUrl} with model ${model}...`)
 
@@ -142,7 +160,8 @@ function textToLexical(text: string): LexicalRoot {
     if (cleanText) {
       children.push({
         type: 'paragraph',
-        children: [{ type: 'text', text: cleanText }],
+        version: 1,
+        children: [{ type: 'text', version: 1, text: cleanText }],
       })
     }
   }
@@ -150,6 +169,7 @@ function textToLexical(text: string): LexicalRoot {
   return {
     root: {
       type: 'root',
+      version: 1,
       children,
       direction: 'ltr',
       format: '',
@@ -240,26 +260,49 @@ Chỉ trả về câu tóm tắt, không giải thích.`
   }
 }
 
+export interface WeeklyGenerationResult {
+  title: string
+  slug: string
+  action: 'created' | 'updated'
+}
+
 // Main function
-async function main() {
+export async function runWeeklyGeneration(): Promise<WeeklyGenerationResult> {
   console.log('🚀 VN AI Weekly Generator\n')
 
-  // Check API connectivity
-  const baseUrl = process.env.ANTHROPIC_BASE_URL || 'http://127.0.0.1:8317'
+  const { getPayload } = await import('payload')
+  const { default: config } = await import('../src/payload.config')
+  const payload = await getPayload({ config })
+
+  // Try new 5-phase pipeline first (consumes DailyTrending data)
+  try {
+    const { runWeeklyPipeline } = await import('../src/lib/weekly/pipeline')
+    const result = await runWeeklyPipeline(payload)
+    console.log('\n🎉 Weekly pipeline complete!')
+    console.log(`  Title: ${result.title}`)
+    console.log(`  Slug: ${result.slug}`)
+    console.log(`  Action: ${result.action}`)
+    console.log(`  Items: ${result.itemCount}`)
+    for (const [phase, info] of Object.entries(result.phases)) {
+      const status = info.skipped ? 'skipped' : `${info.duration}ms`
+      console.log(`  Phase ${phase}: ${status}`)
+    }
+    return { title: result.title, slug: result.slug, action: result.action }
+  } catch (error) {
+    if (error instanceof Error && error.message === 'FALLBACK_TO_RSS') {
+      console.log('\n📰 Falling back to RSS pipeline...')
+    } else {
+      console.warn('\n⚠️ Pipeline failed, falling back to RSS:', error)
+    }
+  }
+
+  // Existing RSS path (unchanged)
+  const baseUrl = process.env.ANTHROPIC_BASE_URL || 'http://103.90.226.240:8317'
   console.log(`Using AI proxy at: ${baseUrl}`)
 
   // Fetch news
-  console.log('\n📰 Fetching AI/tech news from Hacker News...')
-  const news = await fetchHackerNews(15)
-
-  if (news.length === 0) {
-    console.log('No AI-related news found. Using sample data.')
-    news.push(
-      { title: 'Claude MCP Apps and Cowork plugins released', url: 'https://anthropic.com', source: 'HN' },
-      { title: 'Kimi K2.5 tops SWE-Bench leaderboard', url: 'https://kimi.ai', source: 'HN' },
-      { title: 'OpenClaw reaches 100k GitHub stars', url: 'https://github.com', source: 'HN' },
-    )
-  }
+  console.log(`\n📰 Fetching AI/tech news from RSS: ${RSS_FEED_URL}`)
+  const news = await fetchAigcRss(8)
 
   console.log(`Found ${news.length} relevant stories:`)
   news.forEach((n, i) => console.log(`  ${i + 1}. ${n.title}`))
@@ -277,17 +320,14 @@ async function main() {
   // Save to Payload CMS
   console.log('\n💾 Saving to Payload CMS...')
 
-  const { getPayload } = await import('payload')
-  const { default: config } = await import('../src/payload.config')
-
-  const payload = await getPayload({ config })
-
   // Check if exists
   const existing = await payload.find({
     collection: 'weekly',
     where: { slug: { equals: content.slug } },
     limit: 1,
   })
+
+  let action: 'created' | 'updated'
 
   if (existing.docs.length > 0) {
     // Update existing
@@ -303,6 +343,7 @@ async function main() {
         status: 'draft',
       },
     })
+    action = 'updated'
     console.log(`Updated existing post: ${content.slug}`)
   } else {
     // Create new
@@ -321,14 +362,24 @@ async function main() {
         status: 'draft',
       },
     })
+    action = 'created'
     console.log(`Created new post: ${content.slug}`)
   }
 
   console.log('\n🎉 Done! Check your Payload admin panel to review and publish.')
-  process.exit(0)
+
+  return {
+    title: content.title,
+    slug: content.slug,
+    action,
+  }
 }
 
-main().catch((error) => {
-  console.error('Error:', error)
-  process.exit(1)
-})
+if (import.meta.url === `file://${process.argv[1]}`) {
+  runWeeklyGeneration()
+    .then(() => process.exit(0))
+    .catch((error) => {
+      console.error('Error:', error)
+      process.exit(1)
+    })
+}
