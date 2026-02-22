@@ -111,7 +111,7 @@ async function fetchAigcRss(limit = 5): Promise<NewsItem[]> {
 
 // Call AI API to generate content
 async function callAI(prompt: string): Promise<string> {
-  const baseUrl = process.env.ANTHROPIC_BASE_URL || 'http://103.90.226.240:8317'
+  const baseUrl = process.env.ANTHROPIC_BASE_URL || 'https://cliproxyapi.onrender.com'
   const authToken = process.env.ANTHROPIC_AUTH_TOKEN || 'sk-dummy'
   const model = process.env.ANTHROPIC_DEFAULT_HAIKU_MODEL || 'gpt-5.3-codex'
 
@@ -297,7 +297,7 @@ export async function runWeeklyGeneration(): Promise<WeeklyGenerationResult> {
   }
 
   // Existing RSS path (unchanged)
-  const baseUrl = process.env.ANTHROPIC_BASE_URL || 'http://103.90.226.240:8317'
+  const baseUrl = process.env.ANTHROPIC_BASE_URL || 'https://cliproxyapi.onrender.com'
   console.log(`Using AI proxy at: ${baseUrl}`)
 
   // Fetch news

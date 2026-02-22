@@ -21,7 +21,7 @@ mkdir -p "${AUTH_DIR}"
 
 if [ -n "${AUTH_FILES_B64}" ]; then
     echo "[entrypoint] Decoding auth files from AUTH_FILES_B64..."
-    echo "${AUTH_FILES_B64}" | base64 -d | tar xz -C "${AUTH_DIR}" 2>/dev/null
+    echo "${AUTH_FILES_B64}" | base64 -d | tar xz -C "${AUTH_DIR}"
     FILE_COUNT=$(ls -1 "${AUTH_DIR}" | wc -l | tr -d ' ')
     echo "[entrypoint] Restored ${FILE_COUNT} auth file(s) to ${AUTH_DIR}"
 else

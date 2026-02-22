@@ -16,7 +16,7 @@ export async function translatePost(
   chineseContent: string,
   originalTitle: string
 ): Promise<TranslationResult> {
-  const baseUrl = process.env.ANTHROPIC_BASE_URL || 'http://103.90.226.240:8317'
+  const baseUrl = process.env.ANTHROPIC_BASE_URL || 'https://cliproxyapi.onrender.com'
   const authToken = process.env.PROXY_AUTH_TOKEN || 'sk-dummy'
 
   const prompt = buildTranslationPrompt(chineseContent, originalTitle)

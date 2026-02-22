@@ -128,7 +128,7 @@ function extractImageBase64(data: ChatCompletionResponse): Buffer | null {
  * Returns a PNG buffer or null if generation fails.
  */
 export async function generateIllustration(prompt: string): Promise<Buffer | null> {
-  const baseUrl = process.env.ANTHROPIC_BASE_URL || 'http://103.90.226.240:8317'
+  const baseUrl = process.env.ANTHROPIC_BASE_URL || 'https://cliproxyapi.onrender.com'
   const authToken = process.env.PROXY_IMAGE_AUTH_TOKEN || 'sk-dummy'
 
   const body = JSON.stringify({

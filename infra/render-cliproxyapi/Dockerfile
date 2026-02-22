@@ -8,9 +8,8 @@ FROM eceasy/cli-proxy-api:latest
 
 # Install jq for JSON processing and tar for auth extraction
 # The base image is Alpine-based (Go binary)
-RUN apk add --no-cache bash jq tar coreutils || \
-    apt-get update && apt-get install -y --no-install-recommends bash jq tar coreutils && rm -rf /var/lib/apt/lists/* || \
-    true
+RUN apk add --no-cache bash jq tar coreutils 2>/dev/null || \
+    (apt-get update && apt-get install -y --no-install-recommends bash jq tar coreutils && rm -rf /var/lib/apt/lists/*)
 
 # Copy startup scripts
 COPY entrypoint.sh /entrypoint.sh
