@@ -339,7 +339,7 @@ async function main() {
     console.log(`Artifacts: ${artifactsDir}`)
   } else {
     console.log(`Source: ${AIGC_BASE}`)
-    console.log(`LLM: ${process.env.ANTHROPIC_BASE_URL || 'https://cliproxyapi.onrender.com'}`)
+    console.log(`LLM: ${process.env.ANTHROPIC_BASE_URL || 'http://103.90.226.240:8317'}`)
   }
   console.log()
 

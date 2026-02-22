@@ -1,5 +1,0 @@
-.git
-*.md
-.env*
-sync-auth.sh
-render.yaml
