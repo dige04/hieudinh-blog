@@ -32,8 +32,8 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
-log_info()  { echo -e "${GREEN}[INFO]${NC} $*"; }
-log_warn()  { echo -e "${YELLOW}[WARN]${NC} $*"; }
+log_info()  { echo -e "${GREEN}[INFO]${NC} $*" >&2; }
+log_warn()  { echo -e "${YELLOW}[WARN]${NC} $*" >&2; }
 log_error() { echo -e "${RED}[ERROR]${NC} $*" >&2; }
 
 # --------------------------------------------------------------------------
@@ -58,7 +58,8 @@ log_info "Found ${JSON_COUNT} auth file(s) in ${AUTH_DIR}"
 # --------------------------------------------------------------------------
 encode_auth_files() {
     # Only include .json files, strip the directory prefix
-    tar czf - -C "${AUTH_DIR}" $(ls -1 "${AUTH_DIR}"/*.json 2>/dev/null | xargs -n1 basename) | base64
+    # Use tr -d '\n' to remove line wrapping (macOS base64 wraps at 76 chars)
+    tar czf - -C "${AUTH_DIR}" $(ls -1 "${AUTH_DIR}"/*.json 2>/dev/null | xargs -n1 basename) | base64 | tr -d '\n'
 }
 
 log_info "Encoding auth files..."
